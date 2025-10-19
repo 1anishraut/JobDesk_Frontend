@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
@@ -14,30 +14,19 @@ const ProfilePage = () => {
   const router = useRouter();
 
   const [formData, setFormData] = useState({
-    firstName: user?.firstName || "",
-    lastName: user?.lastName || "",
-    age: user?.age || "",
-    gender: user?.gender || "",
-    profession: user?.profession || "",
+    firstName: "",
+    lastName: "",
+    age: "",
+    gender: "",
+    profession: "",
   });
-  useEffect(() => {
-    
-    const hasToken = document.cookie.includes("token=");
 
-    
-    if (!hasToken) {
-      dispatch(removeUser());
-    }
-  }, []);
   const handleChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
-                                                                                      // Update API
+  // Update profile
   const handleUpdate = async () => {
-    if (!user?._id) {
-      toast.error("User ID missing, please login again");
-      return;
-    }
+    if (!user?._id) return toast.error("User ID missing, please login again");
 
     try {
       const res = await axios.patch(
@@ -45,17 +34,15 @@ const ProfilePage = () => {
         formData,
         { withCredentials: true }
       );
-      dispatch(addUser(res.data)); 
-      toast.success("Profile Update Sucessful");
-      setTimeout(()=>{
-        router.back();
-      },2000)
+      dispatch(addUser(res.data));
+      toast.success("Profile updated successfully");
+      setTimeout(() => router.back(), 1500);
     } catch (err) {
-      toast.error(err.response?.data?.message || "Update failed!");
+      toast.error(err.response?.data?.message || "Update failed");
     }
   };
 
-                                                                                      //Delete API
+  // Delete profile
   const handleDelete = async () => {
     if (!confirm("Are you sure?")) return;
 
@@ -72,42 +59,85 @@ const ProfilePage = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center">
+    <div className="min-h-screen flex items-center justify-center bg-gray-900 p-4">
       <ToastContainer position="top-center" autoClose={3000} />
 
-      <div className="p-8 rounded-lg w-full max-w-md">
-        <h1 className="text-2xl font-bold text-white text-center mb-6">
+      <div className="w-full max-w-md bg-gray-800 rounded-xl shadow-lg p-8">
+        <h1 className="text-3xl font-bold text-white text-center mb-8">
           Update Profile
         </h1>
 
-        <div className="flex flex-col gap-4">
-          {["firstName", "lastName", "age", "profession"].map((field) => (
-            <div key={field} className="flex flex-col">
-              <label className="text-gray-300 mb-1 capitalize" htmlFor={field}>
-                {field}
-              </label>
-              <input
-                id={field}
-                type={field === "age" ? "number" : "text"}
-                name={field}
-                value={formData[field]}
-                onChange={handleChange}
-                className="p-2 rounded-md bg-gray-700 text-white outline-none border border-gray-600 focus:border-blue-400"
-                placeholder=""
-              />
-            </div>
-          ))}
-
+        <div className="flex flex-col gap-5">
+          {/* First Name */}
           <div className="flex flex-col">
-            <label className="text-gray-300 mb-1" htmlFor="gender">
-              Gender
+            <label className="text-gray-300 mb-2">
+              First Name <span className="text-red-500">*</span>
+            </label>
+            <input
+              type="text"
+              name="firstName"
+              value={formData.firstName}
+              onChange={handleChange}
+              placeholder="Enter first name"
+              className="p-3 bg-gray-700 text-white rounded-lg border border-gray-600 focus:border-blue-400 focus:outline-none transition"
+            />
+          </div>
+
+          {/* Last Name */}
+          <div className="flex flex-col">
+            <label className="text-gray-300 mb-2">
+              Last Name <span className="text-red-500">*</span>
+            </label>
+            <input
+              type="text"
+              name="lastName"
+              value={formData.lastName}
+              onChange={handleChange}
+              placeholder="Enter last name"
+              className="p-3 bg-gray-700 text-white rounded-lg border border-gray-600 focus:border-blue-400 focus:outline-none transition"
+            />
+          </div>
+
+          {/* Age */}
+          <div className="flex flex-col">
+            <label className="text-gray-300 mb-2">
+              Age <span className="text-red-500">*</span>
+            </label>
+            <input
+              type="number"
+              name="age"
+              value={formData.age}
+              onChange={handleChange}
+              placeholder="Enter age"
+              className="p-3 bg-gray-700 text-white rounded-lg border border-gray-600 focus:border-blue-400 focus:outline-none transition"
+            />
+          </div>
+
+          {/* Profession */}
+          <div className="flex flex-col">
+            <label className="text-gray-300 mb-2">
+              Profession <span className="text-red-500">*</span>
+            </label>
+            <input
+              type="text"
+              name="profession"
+              value={formData.profession}
+              onChange={handleChange}
+              placeholder="Enter profession"
+              className="p-3 bg-gray-700 text-white rounded-lg border border-gray-600 focus:border-blue-400 focus:outline-none transition"
+            />
+          </div>
+
+          {/* Gender */}
+          <div className="flex flex-col">
+            <label className="text-gray-300 mb-2">
+              Gender <span className="text-red-500">*</span>
             </label>
             <select
-              id="gender"
               name="gender"
               value={formData.gender}
               onChange={handleChange}
-              className="p-2 rounded-md bg-gray-700 text-white outline-none border border-gray-600 focus:border-blue-400"
+              className="p-3 bg-gray-700 text-white rounded-lg border border-gray-600 focus:border-blue-400 focus:outline-none transition"
             >
               <option value="">Select Gender</option>
               <option value="male">Male</option>
@@ -117,16 +147,17 @@ const ProfilePage = () => {
           </div>
         </div>
 
-        <div className="flex justify-between mt-6">
+        {/* Buttons */}
+        <div className="flex flex-col sm:flex-row justify-between gap-4 mt-8">
           <button
             onClick={handleUpdate}
-            className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition"
+            className="w-full sm:w-auto px-6 py-3 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 transition"
           >
             Update
           </button>
           <button
             onClick={handleDelete}
-            className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition"
+            className="w-full sm:w-auto px-6 py-3 bg-red-500 text-white font-semibold rounded-lg hover:bg-red-600 transition"
           >
             Delete Account
           </button>
