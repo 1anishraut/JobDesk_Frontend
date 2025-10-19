@@ -77,7 +77,7 @@ const AllTasks = ({ tasks }) => {
 
   return (
     <div className="relative w-full h-full">
-      <div className="grid gap-6 ld::grid-cols-2 ">
+      <div className="grid gap-6 lg:grid-cols-2 ">
         {tasks.map((task) => (
           <div
             key={task._id}
@@ -146,7 +146,7 @@ const AllTasks = ({ tasks }) => {
               <button
                 onClick={() => handleMarkComplete(task._id)}
                 disabled={task.taskStatus === "Completed"}
-                className={`px-4 py-2 rounded-lg text-sm font-semibold transition ${
+                className={`ml-2 px-4 py-2 rounded-lg text-sm font-semibold transition ${
                   task.taskStatus === "Completed"
                     ? "bg-gray-600 cursor-not-allowed"
                     : "bg-green-600 hover:bg-green-500"

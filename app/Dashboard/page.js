@@ -91,7 +91,7 @@ const Page = () => {
 
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6 gap-4">
-        <h2 className="text-3xl font-bold">Your Tasks</h2>
+        <h2 className="text-3xl font-bold">Dashboard</h2>
 
         <div className="flex items-center gap-3">
           <button

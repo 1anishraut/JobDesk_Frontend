@@ -2,19 +2,12 @@
 
 import { useState, useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
-import {
-  FaPlus,
-  FaBuilding,
-  FaCalendarAlt,
-  FaMoneyBillWave,
-  FaPhone,
-  FaEnvelope,
-} from "react-icons/fa";
+import { FaPlus } from "react-icons/fa";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { BASE_URL } from "../Utils/URL";
-import {  FaTimes } from "react-icons/fa";
+import { FaTimes } from "react-icons/fa";
 
 export default function EditTask({ id }) {
   const router = useRouter();
@@ -95,9 +88,9 @@ export default function EditTask({ id }) {
         withCredentials: true,
       });
       toast.success("Task updated successfully!");
-       setTimeout(() => {
-         window.location.reload();
-       }, 2000);
+      setTimeout(() => {
+        window.location.reload();
+      }, 2000);
     } catch (err) {
       console.error("Error updating task:", err);
       toast.error("Failed to update task");
@@ -105,24 +98,23 @@ export default function EditTask({ id }) {
       setLoading(false);
     }
   };
- const handleClose = () => {
-   window.location.reload(); // reload page on close
- };
+  const handleClose = () => {
+    window.location.reload(); // reload page on close
+  };
   return (
     <div className=" lg:p-6 w-full lg:max-w-3xl absolute top-0 left-1/2 transform -translate-x-1/2 ">
       <ToastContainer position="bottom-center" autoClose={3000} />
       <div className="bg-gray-900 rounded-2xl p-6 shadow-xl border border-gray-700">
         <div className="flex justify-between items-center mb-6">
-
-        <h3 className="text-2xl font-bold flex items-center gap-2  text-white">
-          <FaPlus className="text-blue-400" /> Edit Task
-        </h3>
-        <button
-          onClick={handleClose}
-          className=" text-gray-400 hover:text-red-500 transition cursor-pointer"
-        >
-          <FaTimes size={20} />
-        </button>
+          <h3 className="text-2xl font-bold flex items-center gap-2  text-white">
+            <FaPlus className="text-blue-400" /> Edit Task
+          </h3>
+          <button
+            onClick={handleClose}
+            className=" text-gray-400 hover:text-red-500 transition cursor-pointer"
+          >
+            <FaTimes size={20} />
+          </button>
         </div>
 
         <form

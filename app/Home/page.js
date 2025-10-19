@@ -3,18 +3,17 @@
 import { useState } from "react";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
-        import { useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { BASE_URL } from "../Utils/URL";
 import { useDispatch, useSelector } from "react-redux";
 import { addUser } from "../Store/userSlice";
 
-
 export default function AuthPage() {
-  const dispatch = useDispatch()
-  
-const user = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+
+  const user = useSelector((state) => state.user);
   const router = useRouter();
-  const [error, setError] = useState()
+  const [error, setError] = useState();
   const [mode, setMode] = useState("login");
   const [form, setForm] = useState({
     firstName: "",
@@ -27,7 +26,7 @@ const user = useSelector((state) => state.user);
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  //  handler for Axios
+  
   const handleSubmit = async (formData) => {
     const data = {
       firstName: formData.get("firstName"),
@@ -42,24 +41,35 @@ const user = useSelector((state) => state.user);
     if (mode === "forgot") endpoint = "/forgotPassword";
 
     try {
-      const res = await axios.post(BASE_URL +`${endpoint}`, data, {
+      const res = await axios.post(BASE_URL + `${endpoint}`, data, {
         withCredentials: true,
       });
-      dispatch(addUser(res.data))
-      // alert(res.data.message );
-      toast.success("Login successful!");
-      router.push("../Dashboard");
+
+      // console.log(res.data);
+
+      if (mode !== "forgot") {
+        dispatch(addUser(res.data.data || res.data.user || res.data));
+        // alert(res.data.message );
+        toast.success("Login successful!");
+        setTimeout(() => {
+          router.push("../Dashboard");
+        }, 1000);
+      } else {
+       
+        toast.success("Password reset successful! Please login.");
+        setForm({ firstName: "", lastName: "", emailId: "", password: "" });
+        setMode("login"); 
+      }
     } catch (error) {
-      // toast.error("login failed");
+      toast.error(error?.response?.data);
       setError(error.response?.data);
     }
   };
 
-  console.log(user);
-  
+  // console.log(user);
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-900 text-white px-4">
+    <div className="flex flex-col items-center justify-center  bg-gray-900 text-white px-4">
       <ToastContainer position="top-center" autoClose={2000} />
       <div className="bg-gray-800 p-8 rounded-2xl w-full max-w-md shadow-lg">
         <h1 className="text-2xl font-bold mb-6 text-center">
@@ -112,6 +122,9 @@ const user = useSelector((state) => state.user);
             required
           />
 
+                                                                                        {/* Display  */}
+          {error && <p className="text-red-500 text-sm text-center">{error}</p>}
+
           <button
             type="submit"
             className="w-full bg-blue-600 hover:bg-blue-500 py-2 rounded font-semibold"
@@ -124,7 +137,7 @@ const user = useSelector((state) => state.user);
           </button>
         </form>
 
-        {/* Navigation Links */}
+                                                                                      {/* Navigation Links */}
         <div className="mt-6 text-center space-y-2 text-sm">
           {mode !== "login" && (
             <p>
