@@ -20,26 +20,26 @@ const Page = () => {
   const [user, setUser] = useState(false);
 
   // Check user token
-  useEffect(() => {
-    const token = document.cookie
-      .split("; ")
-      .find((row) => row.startsWith("token="))
-      ?.split("=")[1];
+  // useEffect(() => {
+  //   const token = document.cookie
+  //     .split("; ")
+  //     .find((row) => row.startsWith("token="))
+  //     ?.split("=")[1];
 
-    if (token) {
-      setUser(true);
-    } else {
-      const interval = setInterval(
-        () => setCountdown((prev) => prev - 1),
-        1000
-      );
-      const timeout = setTimeout(() => router.push("/"), 4000);
-      return () => {
-        clearInterval(interval);
-        clearTimeout(timeout);
-      };
-    }
-  }, [router]);
+  //   if (token) {
+  //     setUser(true);
+  //   } else {
+  //     const interval = setInterval(
+  //       () => setCountdown((prev) => prev - 1),
+  //       1000
+  //     );
+  //     const timeout = setTimeout(() => router.push("/"), 4000);
+  //     return () => {
+  //       clearInterval(interval);
+  //       clearTimeout(timeout);
+  //     };
+  //   }
+  // }, [router]);
 
   // Fetch tasks from backend
   const fetchTasks = async () => {
@@ -76,14 +76,14 @@ const Page = () => {
     setFilteredTasks(updated);
   }, [filterStatus, sortOrder, tasks]);
 
-  if (!user) {
-    return (
-      <div className="min-h-screen flex flex-col items-center justify-center text-white bg-gray-900">
-        <h1 className="text-2xl font-bold mb-2">Please login</h1>
-        <p>Redirecting to login in {countdown} seconds...</p>
-      </div>
-    );
-  }
+  // if (!user) {
+  //   return (
+  //     <div className="min-h-screen flex flex-col items-center justify-center text-white bg-gray-900">
+  //       <h1 className="text-2xl font-bold mb-2">Please login</h1>
+  //       <p>Redirecting to login in {countdown} seconds...</p>
+  //     </div>
+  //   );
+  // }
 
   return (
     <div className="w-full bg-gray-900 text-white p-6">

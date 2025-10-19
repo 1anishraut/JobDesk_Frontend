@@ -250,7 +250,7 @@ export default function EditTask({ id }) {
             <label className="text-sm text-gray-300">Advance Paid (₹)</label>
             <input
               name="taskAdvencePaid"
-              value={form.taskAdvencePaid}
+              value={form.taskAdvencePaid || ""}
               onChange={handleChange}
               type="number"
               min="0"
@@ -271,7 +271,7 @@ export default function EditTask({ id }) {
             <div className="flex flex-col md:flex-row items-center gap-3">
               <select
                 name="taskStatus"
-                value={form.taskStatus}
+                value={form.taskStatus || ""}
                 onChange={handleChange}
                 className="p-2 rounded-lg bg-gray-800 border border-gray-700 text-white"
               >
