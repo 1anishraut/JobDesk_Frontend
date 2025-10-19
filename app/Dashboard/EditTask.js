@@ -102,7 +102,7 @@ export default function EditTask({ id }) {
     window.location.reload(); // reload page on close
   };
   return (
-    <div className=" lg:p-6 w-full lg:max-w-3xl absolute top-0 left-1/2 transform -translate-x-1/2 ">
+    <div className=" lg:p-6 w-full lg:max-w-3xl absolute top-0 left-1/2 transform -translate-x-1/2 p-4">
       <ToastContainer position="bottom-center" autoClose={3000} />
       <div className="bg-gray-900 rounded-2xl p-6 shadow-xl border border-gray-700">
         <div className="flex justify-between items-center mb-6">

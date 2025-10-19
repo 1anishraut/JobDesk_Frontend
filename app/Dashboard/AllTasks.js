@@ -15,14 +15,13 @@ import { setTasks } from "../Store/taskSlice";
 import { BASE_URL } from "../Utils/URL";
 import { useRouter } from "next/navigation";
 import EditTask from "./EditTask";
-import { Rakkas } from "next/font/google";
 import { toast } from "react-toastify";
 
 const AllTasks = ({ tasks }) => {
   const dispatch = useDispatch();
   const router = useRouter();
 
-                                                                            //  Mark as completed
+  //  Mark as completed
   const handleMarkComplete = async (taskId) => {
     try {
       const res = await axios.patch(
@@ -32,20 +31,19 @@ const AllTasks = ({ tasks }) => {
       );
 
       toast.success("Task Updated successfully!");
-             setTimeout(() => {
-               window.location.reload();
-             }, 2000);
+      setTimeout(() => {
+        window.location.reload();
+      }, 2000);
 
       // console.log(" Status updated:", res.data.message);
     } catch (error) {
       console.error(" Error updating task status:", error);
       // alert("Failed to update task status. Try again!");
       toast.error("Failed to update task. Try again!");
-
     }
   };
 
-                                                                                      //  Delete Task
+  //  Delete Task
   const handleDelete = async (taskId) => {
     if (!confirm("Are you sure you want to delete this task?")) return;
 
@@ -54,10 +52,10 @@ const AllTasks = ({ tasks }) => {
         withCredentials: true,
       });
 
-       toast.success("Task Deleted successfully!");
-       setTimeout(() => {
-         window.location.reload();
-       }, 2000);
+      toast.success("Task Deleted successfully!");
+      setTimeout(() => {
+        window.location.reload();
+      }, 2000);
       // console.log("Task deleted successfully");
     } catch (error) {
       // console.error(" Error deleting task:", error);
@@ -65,19 +63,23 @@ const AllTasks = ({ tasks }) => {
       // alert("Failed to delete task. Try again!");
     }
   };
-  const [taskId, setTaskId] =useState()
 
-                                                                                  //  Edit Task
+  const [taskId, setTaskId] = useState();
+
+  //  Edit Task
   const handleEdit = (taskId) => {
     setTaskId(taskId);
+
+    // Scroll page to top when edit is clicked
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   if (!tasks?.length)
     return <p className="text-center text-gray-400">No tasks available.</p>;
 
   return (
-    <div className="relative w-full h-full">
-      <div className="grid gap-6 lg:grid-cols-2 ">
+    <div className="w-full">
+      <div className="grid gap-6 lg:grid-cols-2">
         {tasks.map((task) => (
           <div
             key={task._id}
@@ -158,8 +160,10 @@ const AllTasks = ({ tasks }) => {
           </div>
         ))}
       </div>
+
+      {/* Edit Modal */}
       {taskId && (
-        <div className="absolute top-0 left-1/2 transform -translate-x-1/2 z-50  border-gray-700 bg-gray-900/60 backdrop-blur-[2px]  rounded-lg shadow-lg w-full h-full  ">
+        <div className="fixed top-0 left-0 w-full h-full z-50 flex items-start justify-center bg-gray-900/70 backdrop-blur-sm overflow-auto p-4">
           <EditTask id={taskId} onClose={() => setTaskId(null)} />
         </div>
       )}
